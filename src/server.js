@@ -5,6 +5,7 @@ const webSocketServer = ws.server;
 const server = http.createServer((req, res) => {
     console.log("HTTP Connected");
     res.writeHead(200);
+    res.write("hi"); // res.write vs. res.send ?
     // return res.send("hi");
     res.end();
 });
