@@ -1,25 +1,16 @@
-import ws from "websocket";
-import http from "http";
-const webSocketServer = ws.server;
+import { WebSocketServer } from "ws";
+import { createServer } from "http";
+import express from "express";
+import router from "./router";
 
-const server = http.createServer((req, res) => {
-    console.log("HTTP Connected");
-    res.writeHead(200);
-    res.write("hi"); // res.write vs. res.send ?
-    // return res.send("hi");
-    res.end();
-});
+const app = express();
+const port = 8080;
 
-server.listen(8080, () => {
-    console.log("Server is listening on port 8080");
-});
+app.use("/", router);
+// app.listen(port, () => { console.log("Express Connected!") });
 
-const wsServer = new webSocketServer({
-    httpServer: server,
-    autoAcceptConnections: false
-});
+const server = createServer(app);
+const wss = new WebSocketServer({ server });
 
-wsServer.on("request", (req) => {
-    const connection = req.accept("echo-protocol", req.origin);
-    connection.on("connection", () => console.log("WS connected!"));
-})
+wss.on("connection", () => { console.log("webSocket server connected!") });
+server.listen(port, () => { console.log("Express in HTTP connected!") });
