@@ -9,12 +9,13 @@ ws.addEventListener("open", () => {
 });
 
 ws.addEventListener("message", (event) => {
-    let message = event.data;
+    let me = event.data;
     console.log("I've got server's message!");
-    fromServer.innerText = message;
+    fromServer.innerText = me;
 });
 
-inputForm.addEventListener("submit", () => {
+inputForm.addEventListener("submit", (event) => {
+    event.preventDefault();
     const message = inputTxt.value;
     ws.send(message);
     console.log(message);
