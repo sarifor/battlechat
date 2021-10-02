@@ -1,5 +1,5 @@
 const ws = new WebSocket("ws://localhost:8080/");
-const submitBtn = document.getElementById("submitBtn");
+let inputForm = document.querySelector("form")
 let inputTxt = document.getElementById("inputTxt");
 
 ws.addEventListener("open", () => {
@@ -14,7 +14,7 @@ ws.addEventListener("message", (event) => {
     chat.innerText = message;
 });
 
-submitBtn.addEventListener("submit", () => {
+inputForm.addEventListener("submit", () => {
     let inputTxt = document.getElementById("inputTxt");
     const message = inputTxt.value;
     ws.send(message);
