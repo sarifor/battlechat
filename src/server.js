@@ -17,8 +17,9 @@ const wss = new WebSocketServer({ server });
 
 wss.on("connection", (socket) => { 
     console.log("webSocket server connected!"); 
-    socket.on("message", () => {
-        socket.send("Hi, Nice to meet you!!!");
+    socket.on("message", (socket) => {
+        console.log(socket);
+        // socket.send("Hi, Nice to meet you!!!");
     })
 
     // wss.on("message", () => { console.log("Hi Client!") });
