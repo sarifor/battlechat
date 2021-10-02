@@ -14,5 +14,14 @@ app.use("/client", express.static(__dirname + "/client"));
 
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
-wss.on("connection", () => { console.log("webSocket server connected!") });
+
+wss.on("connection", (socket) => { 
+    console.log("webSocket server connected!"); 
+    socket.on("message", () => {
+        socket.send("Hi, Nice to meet you!!!");
+    })
+
+    // wss.on("message", () => { console.log("Hi Client!") });
+});
+
 server.listen(port, () => { console.log("Express in HTTP connected!") });
