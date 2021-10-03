@@ -15,11 +15,16 @@ app.use("/client", express.static(__dirname + "/client"));
 const server = createServer(app);
 const wss = new WebSocketServer({ server });
 
+const sockets = [];
+
 wss.on("connection", (socket) => { 
     console.log("webSocket server connected!"); 
+    sockets.push(socket);
     socket.on("message", (message) => {
-        socket.send(message.toString('utf8'));
-    })
+        sockets.forEach(aSocket => {
+            aSocket.send(message.toString('utf8'));
+        });
+    });
 });
 
 server.listen(port, () => { console.log("Express in HTTP connected!") });

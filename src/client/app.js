@@ -8,14 +8,15 @@ ws.addEventListener("open", () => {
 });
 
 ws.addEventListener("message", (event) => {
-    let me = event.data;
-    console.log("I've got server's message!");
-    fromServer.innerText = me;
+    const me = event.data;
+    const meLine = document.createElement('div');
+    meLine.textContent = me;
+    fromServer.append(meLine);
 });
 
 inputForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    const message = inputTxt.value;
+    let message = inputTxt.value;
     ws.send(message);
-    console.log(message);
+    inputTxt.value = "";
 });
