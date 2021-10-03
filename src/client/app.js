@@ -5,7 +5,6 @@ let fromServer = document.getElementById("fromServer");
 
 ws.addEventListener("open", () => {
     console.log("Client Connected!");
-    // ws.send("Hi, Server!");
 });
 
 ws.addEventListener("message", (event) => {

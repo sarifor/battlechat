@@ -18,12 +18,8 @@ const wss = new WebSocketServer({ server });
 wss.on("connection", (socket) => { 
     console.log("webSocket server connected!"); 
     socket.on("message", (message) => {
-        socket.send(message);
-        console.log(message);
-        // socket.send("Hi, Nice to meet you!!!");
+        socket.send(message.toString('utf8'));
     })
-
-    // wss.on("message", () => { console.log("Hi Client!") });
 });
 
 server.listen(port, () => { console.log("Express in HTTP connected!") });
