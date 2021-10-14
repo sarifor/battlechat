@@ -1,4 +1,7 @@
-const ws = new WebSocket("ws://localhost:8080/");
+// const ws = new WebSocket("ws://localhost:8080/");
+import "/socket.io/socket.io/js";
+const socket = io();
+
 let inputForm = document.querySelector("form")
 let inputTxt = document.getElementById("inputTxt");
 let fromServer = document.getElementById("fromServer");

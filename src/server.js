@@ -1,4 +1,4 @@
-import { WebSocketServer } from "ws";
+import { Server } from "socket.io";
 import { createServer } from "http";
 import express from "express";
 import router from "./router";
@@ -13,9 +13,9 @@ app.set("views", path.join(process.cwd(), "/src/views"));
 app.use("/client", express.static(__dirname + "/client"));
 
 const server = createServer(app);
-const wss = new WebSocketServer({ server });
+const io = new Server({ server });
 
-const sockets = [];
+/* const sockets = [];
 
 wss.on("connection", (socket) => { 
     console.log("webSocket server connected!"); 
@@ -25,6 +25,7 @@ wss.on("connection", (socket) => {
             aSocket.send(message.toString('utf8'));
         });
     });
-});
+}); */
 
+io.on("connection", (socket) => { console.log("io connected!"); });
 server.listen(port, () => { console.log("Express in HTTP connected!") });
