@@ -16,5 +16,11 @@ app.use("/client", express.static(__dirname + "/client"));
 const server = createServer(app);
 const io = new Server(server);
 
-io.on("connection", (socket) => { console.log("io connected!"); });
+io.on("connection", (socket) => {
+    console.log("io connected!");    
+    socket.on("messageFromClient", (done) => {
+        done();
+    });
+  });
+
 server.listen(port, () => { console.log("Express in HTTP connected!") });
