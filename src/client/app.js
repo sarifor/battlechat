@@ -4,7 +4,7 @@ let inputForm = document.querySelector("form")
 let inputTxt = document.getElementById("inputTxt");
 let fromServer = document.getElementById("fromServer");
 
-socket.addEventListener("open", () => {
+clientIo.addEventListener("open", () => {
     console.log("Client Connected!");
 });
 
