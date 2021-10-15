@@ -1,4 +1,4 @@
-const socket = io();
+const clientIo = io();
 
 let inputForm = document.querySelector("form")
 let inputTxt = document.getElementById("inputTxt");
@@ -8,7 +8,7 @@ socket.addEventListener("open", () => {
     console.log("Client Connected!");
 });
 
-socket.addEventListener("message", (event) => {
+clientIo.addEventListener("message", (event) => {
     const me = event.data;
     const meLine = document.createElement('div');
     meLine.textContent = me;
@@ -18,6 +18,6 @@ socket.addEventListener("message", (event) => {
 inputForm.addEventListener("submit", (event) => {
     event.preventDefault();
     let message = inputTxt.value;
-    socket.send(message);
+    clientIo.send(message);
     inputTxt.value = "";
 });
