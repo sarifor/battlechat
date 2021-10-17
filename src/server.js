@@ -18,7 +18,7 @@ app.use("/client", express.static(__dirname + "/client"));
 const server = createServer(app);
 const io = new Server(server, {
     cors: {
-        origin: ["http://admin.socket.io"],
+        origin: ["https://admin.socket.io"],
         credentials: true
     }
 });
