@@ -17,7 +17,6 @@ const server = createServer(app);
 const io = new Server(server);
 
 io.on("connection", (socket) => {
-    console.log("io connected!");
     socket.on("messageFromClient", (ms) => {
         socket.broadcast.emit("messageFromServer", ms);
     });
