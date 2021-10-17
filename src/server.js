@@ -1,5 +1,7 @@
 import { createServer } from "http";
 import { Server } from "socket.io";
+import { instrument } from "@socket.io/admin-ui";
+
 import express from "express";
 import router from "./router";
 import path from "path";
@@ -14,7 +16,16 @@ app.set("views", path.join(process.cwd(), "/src/views"));
 app.use("/client", express.static(__dirname + "/client"));
 
 const server = createServer(app);
-const io = new Server(server);
+const io = new Server(server, {
+    cors: {
+        origin: ["http://admin.socket.io"],
+        credentials: true
+    }
+});
+
+instrument(io, {
+    auth: false
+});
 
 io.on("connection", (socket) => {
     socket.on("messageFromClient", (ms) => {
