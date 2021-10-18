@@ -6,7 +6,7 @@ let inputRoomName = document.getElementById("inputRoomName");
 let inputMessageForm = document.getElementById("inputMessageForm");
 let inputMessage = document.getElementById("inputMessage");
 
-let leaveForm = document.getElementById("leaveForm");
+// let leaveForm = document.getElementById("leaveForm");
 
 let messages = document.getElementById("messages");
 
@@ -36,10 +36,10 @@ inputMessageForm.addEventListener("submit", (event) => {
     addMessage(message);
 });
 
-leaveForm.addEventListener("submit", (event) => {
+/* leaveForm.addEventListener("submit", (event) => {
     event.preventDefault();
     clientIo.emit("leaveRoom");
-});
+}); */
 
 clientIo.on("messageFromClient", (message) => {
     addMessage(message);
