@@ -43,6 +43,16 @@ io.on("connection", (socket) => {
         socket.to(roomName).emit("messageFromClient", message);
     });
 
+    // Client로부터 이벤트를 받아, 채팅방 떠나게 하기
+    socket.on("leaveRoom", () => {
+        const roomsArray = [ ...socket.rooms ];
+        console.log(roomsArray);
+        const roomName = roomsArray[1];
+
+        socket.leave(roomName);
+        console.log(roomsArray);
+    });
+
 });
 
 server.listen(port, () => { console.log("Express in HTTP connected!") });
