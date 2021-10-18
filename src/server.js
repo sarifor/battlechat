@@ -43,6 +43,11 @@ io.on("connection", (socket) => {
         socket.to(roomName).emit("messageFromClient", message);
     });
 
+    socket.on("judge", (done) => {
+        console.log("Reached server side");
+        done();
+    });
+
     // Client로부터 이벤트를 받아, 채팅방 떠나게 하기
     socket.on("leaveRoom", () => {
         const roomsArray = [ ...socket.rooms ];

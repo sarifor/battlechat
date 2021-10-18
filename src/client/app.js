@@ -31,7 +31,26 @@ inputMessageForm.addEventListener("submit", (event) => {
     let message = inputMessage.value;
     inputMessage.value = "";
 
+    // To broadcast message
     clientIo.emit("messageFromClient", message);
+
+    // To judge rock scissor paper
+    clientIo.emit("judge", (message) => {
+        // const JsonStringfiedMessage = JSON.stringify(message);
+        const StringMessage = toString(message);
+        // console.log(typeof(StringMessage));
+        // console.log(typeof("rock"));
+        if (StringMessage == "rock") {
+            console.log("You give rock");
+        } else if (StringMessage == "scissor") {
+            console.log("You give scissor");            
+        } else if (StringMessage == "paper") {
+            console.log("You give paper");            
+        } else {
+            console.log("Please do rock sissor paper");
+        }
+    });
+
     addMessage(message);
 });
 
