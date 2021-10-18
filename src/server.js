@@ -28,8 +28,8 @@ instrument(io, {
 });
 
 io.on("connection", (socket) => {
-    socket.on("messageFromClient", (ms) => {
-        socket.broadcast.emit("messageFromClient", ms);
+    socket.on("messageFromClient", (message) => {
+        socket.broadcast.emit("messageFromClient", message);
     });
 });
 
