@@ -62,8 +62,12 @@ io.on("connection", (socket) => {
                 console.log(fingers[0].client, "is wiin!!");
                 
                 // 패배한 socket 쫒아내기
-                // console.log(socket);
-                
+                const clients = io.sockets.adapter.rooms.get(roomName);
+                const defeatedSocket = io.sockets.sockets.get(fingers[1].client);
+
+                console.log(clients);
+                defeatedSocket.leave(roomName);                
+                console.log(clients);
             };
         }
 
