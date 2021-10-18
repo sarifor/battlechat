@@ -2,6 +2,12 @@ extends layout
 
 block content
     #messages
-    form
+
+    form#inputRoomNameForm
+        input(type="text")#inputRoomName
+        input(type="submit")#submitRoomNameBtn
+
+    form#inputMessageForm
         input(type="text")#inputMessage
         input(type="submit")#submitMessageBtn
+    

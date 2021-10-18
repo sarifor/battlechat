@@ -1,6 +1,8 @@
 const clientIo = io();
 
-let inputForm = document.querySelector("form")
+let inputRoomNameForm = document.getElementById("inputRoomNameForm");
+let inputRoomName = document.getElementById("inputRoomName");
+let inputMessageForm = document.getElementById("inputMessageForm");
 let inputMessage = document.getElementById("inputMessage");
 let messages = document.getElementById("messages");
 
@@ -10,7 +12,18 @@ function addMessage (message) {
     messages.append(meLine);
 };
 
-inputForm.addEventListener("submit", (event) => {
+inputRoomNameForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    let roomName = inputRoomName.value;
+    roomName.value = "";
+
+    clientIo.emit("roomName", roomName);
+    const rooms = document.createElement('div');
+    rooms.textContent = roomName;
+    messages.append(rooms);    
+});
+
+inputMessageForm.addEventListener("submit", (event) => {
     event.preventDefault();
     let message = inputMessage.value;
     inputMessage.value = "";
@@ -21,4 +34,10 @@ inputForm.addEventListener("submit", (event) => {
 
 clientIo.on("messageFromClient", (message) => {
     addMessage(message);
+});
+
+clientIo.on("roomName", (roomName) => {
+    const rooms = document.createElement('div');
+    rooms.textContent = roomName;
+    messages.append(rooms);
 });

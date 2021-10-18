@@ -28,9 +28,21 @@ instrument(io, {
 });
 
 io.on("connection", (socket) => {
-    socket.on("messageFromClient", (message) => {
-        socket.broadcast.emit("messageFromClient", message);
+    socket.on("roomName", (roomName) => {
+        // socket에 roomName 추가 후, 모든 방의 Client에게 메시지 발송(=방 이름 보이기)
+        socket.join(roomName);
+        socket.broadcast.emit("roomName", roomName);
     });
+
+    socket.on("messageFromClient", (message) => {
+        // socket에서 roomName을 꺼내와서, 같은 방에 있는 Client에게만 메시지 발송       
+        const roomsArray = [ ...socket.rooms ]; // Set(socket.rooms)에선 값 꺼내는 법이 없는 것 같기에, 배열로 변환하여 값 꺼냄
+        console.log(roomsArray);
+        const roomName = roomsArray[1];
+
+        socket.to(roomName).emit("messageFromClient", message);
+    });
+
 });
 
 server.listen(port, () => { console.log("Express in HTTP connected!") });
