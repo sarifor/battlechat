@@ -16,7 +16,7 @@ inputForm.addEventListener("submit", (event) => {
     fromServer.append(meLine);
 });
 
-clientIo.on("messageFromServer", (data) => {
+clientIo.on("messageFromClient", (data) => {
     const meLine = document.createElement('div');
     meLine.textContent = data;
     fromServer.append(meLine);

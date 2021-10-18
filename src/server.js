@@ -29,8 +29,8 @@ instrument(io, {
 
 io.on("connection", (socket) => {
     socket.on("messageFromClient", (ms) => {
-        socket.broadcast.emit("messageFromServer", ms);
+        socket.broadcast.emit("messageFromClient", ms);
     });
-  });
+});
 
 server.listen(port, () => { console.log("Express in HTTP connected!") });
