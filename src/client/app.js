@@ -34,19 +34,6 @@ inputMessageForm.addEventListener("submit", (event) => {
     // To broadcast message
     clientIo.emit("messageFromClient", message);
 
-    // To judge rock scissor paper
-    clientIo.emit("judge", () => {
-        if (message === "rock") {
-            console.log("You give rock");
-        } else if (message === "scissor") {
-            console.log("You give scissor");            
-        } else if (message === "paper") {
-            console.log("You give paper");            
-        } else {
-            console.log("Please do rock sissor paper");
-        }
-    });
-
     addMessage(message);
 });
 

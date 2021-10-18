@@ -27,6 +27,8 @@ instrument(io, {
     auth: false
 });
 
+let fingers = [];
+
 io.on("connection", (socket) => {
     socket.on("roomName", (roomName) => {
         // socket에 roomName 추가 후, 모든 방의 Client에게 메시지 발송(=방 이름 보이기)
@@ -40,12 +42,31 @@ io.on("connection", (socket) => {
         console.log(roomsArray);
         const roomName = roomsArray[1];
 
-        socket.to(roomName).emit("messageFromClient", message);
-    });
 
-    socket.on("judge", (done) => {
-        console.log("Reached server side");
-        done();
+
+        // 두 clients가 message 전송 시, message가 rock/scissor/paper 셋 중 하나인 경우, socket id와 message를 key&value 배열에 한데 모아서, 배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴
+        if (message === "rock" || message === "scissor" || message === "paper") {
+            console.log("You give one of three");
+            console.log(fingers);
+            fingers.push({
+                client: socket.id,
+                finger: message
+            });
+            console.log(fingers);
+        };
+
+        socket.to(roomName).emit("messageFromClient", message);
+
+        if (fingers.length === 2) { // test: client가 둘 모였고, 첫 client가 scissor, 두 번째 client가 paper인 상황
+            if (fingers[0].finger === "scissor" && fingers[1].finger === "paper") {
+                console.log(fingers[0].client, "is wiin!!");
+                
+                // 패배한 socket 쫒아내기
+                // console.log(socket);
+                
+            };
+        }
+
     });
 
     // Client로부터 이벤트를 받아, 채팅방 떠나게 하기
