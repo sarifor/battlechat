@@ -31,9 +31,7 @@ inputMessageForm.addEventListener("submit", (event) => {
     let message = inputMessage.value;
     inputMessage.value = "";
 
-    // To broadcast message
     clientIo.emit("messageFromClient", message);
-
     addMessage(message);
 });
 
