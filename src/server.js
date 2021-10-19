@@ -55,9 +55,12 @@ io.on("connection", (socket) => {
             if (fingers[0].finger === "scissor" && fingers[1].finger === "paper") {
                 console.log(fingers[0].client, "is wiin!!");
                 
-                // const clients = io.sockets.adapter.rooms.get(roomName);
+                const clients = io.sockets.adapter.rooms.get(roomName);
                 const defeatedSocket = io.sockets.sockets.get(fingers[1].client);
+
+                console.log(clients);
                 defeatedSocket.leave(roomName);                
+                console.log(clients);
             };
         };
 
