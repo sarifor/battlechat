@@ -33,12 +33,14 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("roomName", roomName);
     });
 
+    /* clients에서 roomName과 message를 받았을 때, 
+    1) 기본적으로 같은 방에 전송자를 제외하고 브로드캐스팅하되,
+    2) message가 rock/scissor/paper 셋 중 하나인 경우,
+    socket id와 message를 key&value 배열에 한데 모으고, 
+    배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴 */
     socket.on("messageFromClient", (roomName, message) => {
-        // const roomsArray = [ ...socket.rooms ]; // Set(socket.rooms)에선 값 꺼내는 법이 없는 것 같기에, 배열로 변환하여 값 꺼냄
-        // console.log(roomsArray);
-        // const roomName = roomsArray[1];
+        socket.to(roomName).emit("messageFromClient", message);
 
-        // 두 clients가 message 전송 시, message가 rock/scissor/paper 셋 중 하나인 경우, socket id와 message를 key&value 배열에 한데 모아서, 배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴
         if (message === "rock" || message === "scissor" || message === "paper") {
             console.log("You give one of three");
             console.log(fingers);
@@ -49,11 +51,10 @@ io.on("connection", (socket) => {
             console.log(fingers);
         };
 
-        socket.to(roomName).emit("messageFromClient", message);
-
-        if (fingers.length === 2) { // test: client가 둘 모였고, 첫 client가 scissor, 두 번째 client가 paper인 상황
+        if (fingers.length === 2) {
+            // test: 첫 client가 scissor, 두 번째 client가 paper이고, 패배한 두 번째 client를 방에서 내보내기
             if (fingers[0].finger === "scissor" && fingers[1].finger === "paper") {
-                console.log(fingers[0].client, "is wiin!!");
+                console.log(fingers[0].client, "is win!!");
                 
                 const clients = io.sockets.adapter.rooms.get(roomName);
                 const defeatedSocket = io.sockets.sockets.get(fingers[1].client);
