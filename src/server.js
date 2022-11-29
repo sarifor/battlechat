@@ -33,10 +33,10 @@ io.on("connection", (socket) => {
         socket.broadcast.emit("roomName", roomName);
     });
 
-    socket.on("messageFromClient", (message) => {
-        const roomsArray = [ ...socket.rooms ]; // Set(socket.rooms)에선 값 꺼내는 법이 없는 것 같기에, 배열로 변환하여 값 꺼냄
-        console.log(roomsArray);
-        const roomName = roomsArray[1];
+    socket.on("messageFromClient", (roomName, message) => {
+        // const roomsArray = [ ...socket.rooms ]; // Set(socket.rooms)에선 값 꺼내는 법이 없는 것 같기에, 배열로 변환하여 값 꺼냄
+        // console.log(roomsArray);
+        // const roomName = roomsArray[1];
 
         // 두 clients가 message 전송 시, message가 rock/scissor/paper 셋 중 하나인 경우, socket id와 message를 key&value 배열에 한데 모아서, 배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴
         if (message === "rock" || message === "scissor" || message === "paper") {

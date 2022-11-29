@@ -9,6 +9,8 @@ let inputMessage = document.getElementById("inputMessage");
 let leaveForm = document.getElementById("leaveForm");
 let messages = document.getElementById("messages");
 
+let roomName;
+
 function addMessage (message) {
     const meLine = document.createElement('div');
     meLine.textContent = message;
@@ -17,13 +19,14 @@ function addMessage (message) {
 
 inputRoomNameForm.addEventListener("submit", (event) => {
     event.preventDefault();
-    let roomName = inputRoomName.value;
-    roomName.value = "";
+    roomName = inputRoomName.value;
 
     clientIo.emit("roomName", roomName);
+    inputRoomName.value = "";
+
     const rooms = document.createElement('div');
     rooms.textContent = roomName;
-    messages.append(rooms);    
+    messages.append(rooms);
 });
 
 inputMessageForm.addEventListener("submit", (event) => {
@@ -31,7 +34,7 @@ inputMessageForm.addEventListener("submit", (event) => {
     let message = inputMessage.value;
     inputMessage.value = "";
 
-    clientIo.emit("messageFromClient", message);
+    clientIo.emit("messageFromClient", roomName, message);
     addMessage(message);
 });
 
