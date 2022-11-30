@@ -1,3 +1,7 @@
 export const test = (req, res) => {
-    return res.render("home");
+    return res.render("main");
+};
+
+export const createRoom = (req, res) => {
+    return res.render("create-room");
 };
