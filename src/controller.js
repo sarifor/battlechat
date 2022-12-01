@@ -5,3 +5,7 @@ export const test = (req, res) => {
 export const createRoom = (req, res) => {
     return res.render("create-room");
 };
+
+export const chat = (req, res) => {
+    return res.render("chat");
+};
