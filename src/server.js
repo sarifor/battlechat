@@ -29,8 +29,11 @@ instrument(io, {
 
 io.on("connection", (socket) => {
     socket.on("roomName", (roomName) => {
+        console.log(roomName);
         socket.join(roomName);
-        socket.broadcast.emit("roomName", roomName);
+        // const roomNames = socket.rooms // socket.rooms의 타입을 Set에서 Array로 변환하고, 꺼내쓰기 쉽게 다듬기
+        const roomNames = ["room1", "room2", "room3"]; // 테스트 값
+        socket.broadcast.emit("roomName", roomNames);
     });
 
     /* clients에서 roomName과 message를 받았을 때, 
@@ -38,7 +41,7 @@ io.on("connection", (socket) => {
     2) message가 rock/scissor/paper 셋 중 하나인 경우,
     socket id와 message를 key&value 배열에 한데 모으고, 
     배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴 */
-    socket.on("messageFromClient", (roomName, message) => {
+    /* socket.on("messageFromClient", (roomName, message) => {
         socket.to(roomName).emit("messageFromClient", message);
 
         if (message === "rock" || message === "scissor" || message === "paper") {
@@ -65,14 +68,12 @@ io.on("connection", (socket) => {
             };
         };
 
-    });
+    }); */
 
-    socket.on("leaveRoom", () => {
-        const roomsArray = [ ...socket.rooms ];
-        const roomName = roomsArray[1];
+    /* socket.on("leaveRoom", (roomName) => {
         socket.leave(roomName);
-    });
+    }); */
 
 });
 
-server.listen(port, () => { console.log("Express in HTTP connected!") });
+server.listen(port, () => { console.log(`http://localhost:${port}`) });

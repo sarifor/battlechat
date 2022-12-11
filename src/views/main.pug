@@ -3,9 +3,10 @@ extends layout
 block content
     header(style="border-bottom: solid 1px;")
         a(href="/create-room" style="border: solid 1px;")="Create Room"
-    main
-        div(style="border-bottom: solid 1px;")
-            span="Room 1"
-        div(style="border-bottom: solid 1px;")
-            span="Room 2"
+ 
+    main(id="displayRoomNames")
+        // 각 방 이름 표시 공간
+        // div(style="border-bottom: solid 1px;")
+            a(href="/chat" style="border: solid 1px;")=eachRoomName
+    
     footer
