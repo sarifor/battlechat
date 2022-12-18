@@ -34,7 +34,7 @@ io.on("connection", (socket) => {
         console.log(socket.rooms);
         // const roomNames = socket.rooms // socket.rooms의 타입을 Set에서 Array로 변환하고, 꺼내쓰기 쉽게 다듬기
         const roomNames = ["room1", "room2", "room3"]; // 테스트 값
-        socket.broadcast.emit("roomName", roomNames);
+        socket.broadcast.emit("roomNames", roomNames);
     });
 
     /* clients에서 roomName과 message를 받았을 때, 

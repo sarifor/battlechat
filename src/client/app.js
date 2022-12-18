@@ -9,6 +9,7 @@ let inputRoomName = document.getElementById("inputRoomName");
 let displayRoomNamesDiv = document.getElementById("displayRoomNamesDiv");
 
 // Input message
+let chatDiv = document.getElementById("chatDiv");
 let inputMessageForm = document.getElementById("inputMessageForm");
 let inputMessage = document.getElementById("inputMessage");
 let messages = document.getElementById("messages");
@@ -18,22 +19,41 @@ let leaveForm = document.getElementById("leaveForm");
 
 // Global variables for Room names
 let roomName;
-// let roomNames;
-console.log(roomNames);
+let roomNamesArray = [];
 
 function init () {
-    if (roomNames) {
-        inputRoomNameDiv.hidden = true;
-        displayRoomNamesDiv.hidden = false;
-        chatDiv.hidden = true;
-    } else {
-        inputRoomNameDiv.hidden = false;
-        displayRoomNamesDiv.hidden = true;
-        chatDiv.hidden = true;    
-    }
+    inputRoomNameDiv.hidden = false;
+    displayRoomNamesDiv.hidden = true;
+    chatDiv.hidden = true;    
 }
 
 init();
+
+// When room names exist, display them, and user clicks one of them, join user into the room.
+clientIo.on("roomNames", (roomNames) => {
+    roomNamesArray = roomNames;
+    console.log(roomNamesArray);
+
+    if (roomNamesArray !== []) {
+        console.log("hihi");
+        // inputRoomNameDiv.hidden = true;
+        // displayRoomNamesDiv.hidden = false;
+
+        console.log(roomNamesArray, "you can see?");
+        roomNamesArray.map(eachRoomName => {
+            const room = document.createElement('div');
+            room.textContent = eachRoomName;
+            room.addEventListener("click", joinRoom(eachRoomName));
+            displayRoomNamesDiv.append(room);
+        
+            function joinRoom (eachRoomName) {
+                clientIo.emit("roomName", eachRoomName);
+            };
+        });
+    };    
+});
+
+console.log(roomNamesArray, "hi");
 
 function addMessage (message) {
     const meLine = document.createElement('div');
@@ -54,6 +74,7 @@ inputRoomNameForm.addEventListener("submit", (event) => {
     chatDiv.hidden = false;
 });
 
+
 inputMessageForm.addEventListener("submit", (event) => {
     event.preventDefault();
     let message = inputMessage.value;
@@ -73,7 +94,7 @@ leaveForm.addEventListener("submit", (event) => {
     
     roomName = "";
 
-    if (roomNames) {        
+    if (roomNamesArray) {        
         inputRoomNameDiv.hidden = true;
         displayRoomNamesDiv.hidden = false;
         chatDiv.hidden = true;
@@ -86,17 +107,3 @@ leaveForm.addEventListener("submit", (event) => {
     // Clear previous messages before user leaving room
     messages.innerHTML = "";
 });
-
-// When room names exist, display them, and user clicks one of them, join user into the room.
-if (roomNames) {
-    roomNames.map(eachRoomName => {
-        const room = document.createElement('div');
-        room.textContent = eachRoomName;
-        room.addEventListener("click", joinRoom(eachRoomName));
-        displayRoomNamesDiv.append(room);
- 
-        function joinRoom (eachRoomName) {
-            clientIo.emit("roomName", eachRoomName);
-        };
-    });
-};
