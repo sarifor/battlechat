@@ -6,7 +6,7 @@ let inputRoomNameForm = document.getElementById("inputRoomNameForm");
 let inputRoomName = document.getElementById("inputRoomName");
 
 // Display room names
-let displayRoomNamesDiv = document.getElementById("displayRoomNames");
+let displayRoomNamesDiv = document.getElementById("displayRoomNamesDiv");
 
 // Input message
 let inputMessageForm = document.getElementById("inputMessageForm");
