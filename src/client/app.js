@@ -18,7 +18,8 @@ let leaveForm = document.getElementById("leaveForm");
 
 // Global variables for Room names
 let roomName;
-let roomNames;
+// let roomNames;
+console.log(roomNames);
 
 function init () {
     if (roomNames) {
@@ -47,6 +48,9 @@ inputRoomNameForm.addEventListener("submit", (event) => {
     clientIo.emit("roomName", roomName);
     inputRoomName.value = "";
     inputRoomNameDiv.hidden = true;
+
+    // Clear previous messages before user entering room
+    messages.innerHTML = "";
     chatDiv.hidden = false;
 });
 
@@ -66,10 +70,10 @@ clientIo.on("messageFromClient", (message) => {
 leaveForm.addEventListener("submit", (event) => {
     event.preventDefault();
     clientIo.emit("leaveRoom", roomName);
-
+    
     roomName = "";
 
-    if (roomNames) {
+    if (roomNames) {        
         inputRoomNameDiv.hidden = true;
         displayRoomNamesDiv.hidden = false;
         chatDiv.hidden = true;
@@ -79,6 +83,8 @@ leaveForm.addEventListener("submit", (event) => {
         chatDiv.hidden = true;    
     }
 
+    // Clear previous messages before user leaving room
+    messages.innerHTML = "";
 });
 
 // When room names exist, display them, and user clicks one of them, join user into the room.
