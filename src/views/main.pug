@@ -2,11 +2,30 @@ extends layout
 
 block content
     header(style="border-bottom: solid 1px;")
-        a(href="/create-room" style="border: solid 1px;")="Create Room"
- 
-    main(id="displayRoomNames")
-        // 각 방 이름 표시 공간
-        // div(style="border-bottom: solid 1px;")
+        a(href="/create-room" style="border: solid 1px;")="Battle Chat!"
+
+    div(id="inputRoomNameDiv")
+        form(id="inputRoomNameForm")
+            input(type="text" id="inputRoomName" style="border-bottom: solid 1px;")
+            input(type="submit", value="Send" style="border: solid 1px;")
+
+    div(id="displayRoomNamesDiv")
+        div(style="border-bottom: solid 1px;")
             a(href="/chat" style="border: solid 1px;")=eachRoomName
     
+    div(id="chatDiv")
+        div(style="border-top: solid 1px;")
+            form(id="leaveForm")
+                input(type="submit", value="Leave" style="border: solid 1px;")
+        div(id="messages")
+            div
+                span="Socket ID 1: "
+                span="chat message"
+            div
+                span="Socket ID 2: "
+                span="chat message" 
+        div(style="border-top: solid 1px;")
+            form(id="inputMessageForm")
+                input(type="text" id="inputMessage" style="border-bottom: solid 1px;")
+                input(type="submit", value="Send" style="border: solid 1px;")
     footer

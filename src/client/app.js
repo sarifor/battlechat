@@ -1,22 +1,44 @@
 const clientIo = io();
 
-let displayRoomNames = document.getElementById("displayRoomNames");
+// Input room name
+let inputRoomNameDiv = document.getElementById("inputRoomNameDiv");
 let inputRoomNameForm = document.getElementById("inputRoomNameForm");
 let inputRoomName = document.getElementById("inputRoomName");
 
-/* let inputMessageForm = document.getElementById("inputMessageForm");
+// Display room names
+let displayRoomNamesDiv = document.getElementById("displayRoomNames");
+
+// Input message
+let inputMessageForm = document.getElementById("inputMessageForm");
 let inputMessage = document.getElementById("inputMessage");
+let messages = document.getElementById("messages");
 
+// Leave room
 let leaveForm = document.getElementById("leaveForm");
-let messages = document.getElementById("messages"); */
 
+// Global variables for Room names
 let roomName;
+let roomNames;
 
-/* function addMessage (message) {
+function init () {
+    if (roomNames) {
+        inputRoomNameDiv.hidden = true;
+        displayRoomNamesDiv.hidden = false;
+        chatDiv.hidden = true;
+    } else {
+        inputRoomNameDiv.hidden = false;
+        displayRoomNamesDiv.hidden = true;
+        chatDiv.hidden = true;    
+    }
+}
+
+init();
+
+function addMessage (message) {
     const meLine = document.createElement('div');
     meLine.textContent = message;
     messages.append(meLine);
-}; */
+};
 
 inputRoomNameForm.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -24,38 +46,51 @@ inputRoomNameForm.addEventListener("submit", (event) => {
 
     clientIo.emit("roomName", roomName);
     inputRoomName.value = "";
-
-    // const rooms = document.createElement('div');
-    // rooms.textContent = roomName;
-    // messages.append(rooms);
+    inputRoomNameDiv.hidden = true;
+    chatDiv.hidden = false;
 });
 
-/* inputMessageForm.addEventListener("submit", (event) => {
+inputMessageForm.addEventListener("submit", (event) => {
     event.preventDefault();
     let message = inputMessage.value;
     inputMessage.value = "";
 
     clientIo.emit("messageFromClient", roomName, message);
     addMessage(message);
-}); */
-
-/* leaveForm.addEventListener("submit", (event) => {
-    event.preventDefault();
-    clientIo.emit("leaveRoom");
-}); */
-
-/* clientIo.on("messageFromClient", (message) => {
-    addMessage(message);
-}); */
-
-clientIo.on("roomName", (roomNames) => {
-    console.log(roomNames);
-    console.log(displayRoomNames); // null
-
-    // roomNames를 for문으로 돌려, 각 방 이름 보이기
-    for (let i = 0; ; i++) {
-        const room = document.createElement('div');
-        room.textContent = roomNames[i];
-        displayRoomNames.append(room);
-    }
 });
+
+clientIo.on("messageFromClient", (message) => {
+    addMessage(message);
+});
+
+leaveForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    clientIo.emit("leaveRoom", roomName);
+
+    roomName = "";
+
+    if (roomNames) {
+        inputRoomNameDiv.hidden = true;
+        displayRoomNamesDiv.hidden = false;
+        chatDiv.hidden = true;
+    } else {
+        inputRoomNameDiv.hidden = false;
+        displayRoomNamesDiv.hidden = true;
+        chatDiv.hidden = true;    
+    }
+
+});
+
+// When room names exist, display them, and user clicks one of them, join user into the room.
+if (roomNames) {
+    roomNames.map(eachRoomName => {
+        const room = document.createElement('div');
+        room.textContent = eachRoomName;
+        room.addEventListener("click", joinRoom(eachRoomName));
+        displayRoomNamesDiv.append(room);
+ 
+        function joinRoom (eachRoomName) {
+            clientIo.emit("roomName", eachRoomName);
+        };
+    });
+};

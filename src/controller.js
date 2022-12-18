@@ -1,11 +1,11 @@
-export const test = (req, res) => {
+export const main = (_, res) => {
     return res.render("main");
 };
 
-export const createRoom = (req, res) => {
-    return res.render("create-room");
+export const createRoom = (_, res) => {
+    return res.redirect("/");
 };
 
-export const chat = (req, res) => {
-    return res.render("chat");
+export const chat = (_, res) => {
+    return res.redirect("/");
 };

@@ -29,8 +29,9 @@ instrument(io, {
 
 io.on("connection", (socket) => {
     socket.on("roomName", (roomName) => {
-        console.log(roomName);
+        // console.log(roomName);
         socket.join(roomName);
+        console.log(socket.rooms);
         // const roomNames = socket.rooms // socket.rooms의 타입을 Set에서 Array로 변환하고, 꺼내쓰기 쉽게 다듬기
         const roomNames = ["room1", "room2", "room3"]; // 테스트 값
         socket.broadcast.emit("roomName", roomNames);
@@ -41,10 +42,10 @@ io.on("connection", (socket) => {
     2) message가 rock/scissor/paper 셋 중 하나인 경우,
     socket id와 message를 key&value 배열에 한데 모으고, 
     배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴 */
-    /* socket.on("messageFromClient", (roomName, message) => {
-        socket.to(roomName).emit("messageFromClient", message);
+    socket.on("messageFromClient", (roomName, message) => {
+        socket.to(roomName).emit("messageFromClient", message); // broadcast to all clients while the socket itself being excluded
 
-        if (message === "rock" || message === "scissor" || message === "paper") {
+        /* if (message === "rock" || message === "scissor" || message === "paper") {
             console.log("You give one of three");
             console.log(fingers);
             fingers.push({
@@ -66,13 +67,13 @@ io.on("connection", (socket) => {
                 defeatedSocket.leave(roomName);                
                 console.log(clients);
             };
-        };
+        }; */
 
-    }); */
+    });
 
-    /* socket.on("leaveRoom", (roomName) => {
+    socket.on("leaveRoom", (roomName) => {
         socket.leave(roomName);
-    }); */
+    });
 
 });
 
