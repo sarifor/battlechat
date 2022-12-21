@@ -18,6 +18,7 @@ let messages = document.getElementById("messages");
 let leaveForm = document.getElementById("leaveForm");
 
 // Global variables for Room names
+let clientID;
 let roomName;
 let roomNamesArray = [];
 
@@ -55,9 +56,9 @@ clientIo.on("roomNames", (roomNames) => {
     };
 });
 
-function addMessage (message) {
+function addMessage (message, clientID) {
     const meLine = document.createElement('div');
-    meLine.textContent = message;
+    meLine.textContent = clientID + ": " + message;
     messages.append(meLine);
 };
 
@@ -81,12 +82,13 @@ inputMessageForm.addEventListener("submit", (event) => {
     let message = inputMessage.value;
     inputMessage.value = "";
 
-    clientIo.emit("messageFromClient", roomName, message);
-    addMessage(message);
+    clientID = clientIo.id;
+    clientIo.emit("messageFromClient", roomName, message, clientID);
+    addMessage(message, clientID);
 });
 
-clientIo.on("messageFromClient", (message) => {
-    addMessage(message);
+clientIo.on("messageFromClient", (message, clientID) => {
+    addMessage(message, clientID);
 });
 
 leaveForm.addEventListener("submit", (event) => {

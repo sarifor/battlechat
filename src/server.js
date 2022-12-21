@@ -41,8 +41,8 @@ io.on("connection", (socket) => {
     2) message가 rock/scissor/paper 셋 중 하나인 경우,
     socket id와 message를 key&value 배열에 한데 모으고, 
     배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴 */
-    socket.on("messageFromClient", (roomName, message) => {
-        socket.to(roomName).emit("messageFromClient", message); // broadcast to all clients while the socket itself being excluded
+    socket.on("messageFromClient", (roomName, message, clientID) => {
+        socket.to(roomName).emit("messageFromClient", message, clientID); // broadcast to all clients while the socket itself being excluded
 
         /* if (message === "rock" || message === "scissor" || message === "paper") {
             console.log("You give one of three");
