@@ -46,6 +46,7 @@ clientIo.on("roomNames", (roomNames) => {
                    
             function joinRoom (eachRoomName) {
                 clientIo.emit("roomName", eachRoomName);
+                roomName = eachRoomName;
                 inputRoomNameDiv.hidden = true;
                 displayRoomNamesDiv.hidden = true;
                 chatDiv.hidden = false;
