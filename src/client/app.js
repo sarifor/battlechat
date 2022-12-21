@@ -34,17 +34,19 @@ clientIo.on("roomNames", (roomNames) => {
     roomNamesArray = roomNames;
     console.log(roomNamesArray);
 
-    if (roomNamesArray) {
+    // Show RoomNamesDiv and map each room name, only under specific conditions
+    if (roomNamesArray && !inputRoomNameDiv.hidden && displayRoomNamesDiv.hidden && chatDiv.hidden) {
         displayRoomNamesDiv.hidden = false;
     
         roomNamesArray.map(eachRoomName => {
             const room = document.createElement('a');
             room.textContent = eachRoomName;
-            room.addEventListener("click", () => joinRoom(eachRoomName));
+            room.addEventListener("click", () => joinRoom(eachRoomName)); // needs to pass 'event'?
             displayRoomNamesDiv.append(room);
                    
             function joinRoom (eachRoomName) {
                 clientIo.emit("roomName", eachRoomName);
+                inputRoomNameDiv.hidden = true;
                 displayRoomNamesDiv.hidden = true;
                 chatDiv.hidden = false;
             };
@@ -65,6 +67,7 @@ inputRoomNameForm.addEventListener("submit", (event) => {
     clientIo.emit("roomName", roomName);
     inputRoomName.value = "";
     inputRoomNameDiv.hidden = true;
+    displayRoomNamesDiv.hidden = true;
 
     // Clear previous messages before user entering room
     messages.innerHTML = "";
