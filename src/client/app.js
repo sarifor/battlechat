@@ -40,11 +40,13 @@ clientIo.on("roomNames", (roomNames) => {
         roomNamesArray.map(eachRoomName => {
             const room = document.createElement('a');
             room.textContent = eachRoomName;
-            room.addEventListener("click", joinRoom(eachRoomName));
+            room.addEventListener("click", () => joinRoom(eachRoomName));
             displayRoomNamesDiv.append(room);
-        
+                   
             function joinRoom (eachRoomName) {
                 clientIo.emit("roomName", eachRoomName);
+                displayRoomNamesDiv.hidden = true;
+                chatDiv.hidden = false;
             };
         });
     };

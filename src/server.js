@@ -33,6 +33,7 @@ io.on("connection", (socket) => {
 
     socket.on("roomName", (roomName) => {
         socket.join(roomName);
+        console.log("Client has joined " + roomName)
     });
 
     /* clients에서 roomName과 message를 받았을 때, 
