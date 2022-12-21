@@ -34,14 +34,11 @@ clientIo.on("roomNames", (roomNames) => {
     roomNamesArray = roomNames;
     console.log(roomNamesArray);
 
-    if (roomNamesArray !== []) {
-        console.log("hihi");
-        // inputRoomNameDiv.hidden = true;
-        // displayRoomNamesDiv.hidden = false;
-
-        console.log(roomNamesArray, "you can see?");
+    if (roomNamesArray) {
+        displayRoomNamesDiv.hidden = false;
+    
         roomNamesArray.map(eachRoomName => {
-            const room = document.createElement('div');
+            const room = document.createElement('a');
             room.textContent = eachRoomName;
             room.addEventListener("click", joinRoom(eachRoomName));
             displayRoomNamesDiv.append(room);
@@ -50,10 +47,8 @@ clientIo.on("roomNames", (roomNames) => {
                 clientIo.emit("roomName", eachRoomName);
             };
         });
-    };    
+    };
 });
-
-console.log(roomNamesArray, "hi");
 
 function addMessage (message) {
     const meLine = document.createElement('div');
