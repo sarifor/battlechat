@@ -9,6 +9,7 @@ import path from "path";
 const app = express();
 const port = 8080;
 let fingers = [];
+let roomNames = [];
 
 app.use("/", router);
 app.set("view engine", "pug");
@@ -28,7 +29,22 @@ instrument(io, {
 });
 
 io.on("connection", (socket) => {
-    const roomNames = ["room1", "room2", "room3"]; // test
+    const sids = io.of("/").adapter.sids; // io.sockets.adapter.sids is also available.
+    const rooms = io.of("/").adapter.rooms;
+
+    console.log("---- sids ----");
+    console.log(sids);
+    console.log("---- rooms ---- ");
+    console.log(rooms);
+
+    rooms.forEach((_, key) => {
+        if (sids.get(key) === undefined) {
+            roomNames.push(key);
+        };
+    });
+
+    console.log("Room list: " + roomNames);
+
     io.emit("roomNames", roomNames);    
 
     socket.on("roomName", (roomName) => {
@@ -43,6 +59,11 @@ io.on("connection", (socket) => {
     배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴 */
     socket.on("messageFromClient", (roomName, message, clientID) => {
         socket.to(roomName).emit("messageFromClient", message, clientID); // broadcast to all clients while the socket itself being excluded
+
+        console.log("---- sids ----");
+        console.log(sids);
+        console.log("---- rooms ---- ");
+        console.log(rooms);
 
         /* if (message === "rock" || message === "scissor" || message === "paper") {
             console.log("You give one of three");
