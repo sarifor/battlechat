@@ -41,10 +41,14 @@ clientIo.on("roomNames", (roomNames) => {
     
         roomNamesArray.map(eachRoomName => {
             const room = document.createElement('a');
+            const br = document.createElement('br');
+
             room.textContent = eachRoomName;
             room.addEventListener("click", () => joinRoom(eachRoomName)); // needs to pass 'event'?
+
             displayRoomNamesDiv.append(room);
-                   
+            displayRoomNamesDiv.append(br);
+
             function joinRoom (eachRoomName) {
                 clientIo.emit("roomName", eachRoomName);
                 roomName = eachRoomName;
