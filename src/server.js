@@ -9,7 +9,6 @@ import path from "path";
 const app = express();
 const port = 8080;
 let fingers = [];
-let roomNames = [];
 
 app.use("/", router);
 app.set("view engine", "pug");
@@ -29,6 +28,7 @@ instrument(io, {
 });
 
 io.on("connection", (socket) => {
+    const roomNames = [];
     const sids = io.of("/").adapter.sids; // io.sockets.adapter.sids is also available.
     const rooms = io.of("/").adapter.rooms;
 
