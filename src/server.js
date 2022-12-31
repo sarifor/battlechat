@@ -28,9 +28,28 @@ instrument(io, {
 });
 
 io.on("connection", (socket) => {
+    const roomNames = [];
+    const sids = io.of("/").adapter.sids; // io.sockets.adapter.sids is also available.
+    const rooms = io.of("/").adapter.rooms;
+
+    console.log("---- sids ----");
+    console.log(sids);
+    console.log("---- rooms ---- ");
+    console.log(rooms);
+
+    rooms.forEach((_, key) => {
+        if (sids.get(key) === undefined) {
+            roomNames.push(key);
+        };
+    });
+
+    console.log("Room list: " + roomNames);
+
+    io.emit("roomNames", roomNames);    
+
     socket.on("roomName", (roomName) => {
         socket.join(roomName);
-        socket.broadcast.emit("roomName", roomName);
+        console.log("Client has joined " + roomName)
     });
 
     /* clients에서 roomName과 message를 받았을 때, 
@@ -38,10 +57,15 @@ io.on("connection", (socket) => {
     2) message가 rock/scissor/paper 셋 중 하나인 경우,
     socket id와 message를 key&value 배열에 한데 모으고, 
     배열 요소 2개가 모였을 때 두 client 간의 승패 비교하여, 진 쪽을 강퇴시킴 */
-    socket.on("messageFromClient", (roomName, message) => {
-        socket.to(roomName).emit("messageFromClient", message);
+    socket.on("messageFromClient", (roomName, message, clientID) => {
+        socket.to(roomName).emit("messageFromClient", message, clientID); // broadcast to all clients while the socket itself being excluded
 
-        if (message === "rock" || message === "scissor" || message === "paper") {
+        console.log("---- sids ----");
+        console.log(sids);
+        console.log("---- rooms ---- ");
+        console.log(rooms);
+
+        /* if (message === "rock" || message === "scissor" || message === "paper") {
             console.log("You give one of three");
             console.log(fingers);
             fingers.push({
@@ -63,16 +87,14 @@ io.on("connection", (socket) => {
                 defeatedSocket.leave(roomName);                
                 console.log(clients);
             };
-        };
+        }; */
 
     });
 
-    socket.on("leaveRoom", () => {
-        const roomsArray = [ ...socket.rooms ];
-        const roomName = roomsArray[1];
+    socket.on("leaveRoom", (roomName) => {
         socket.leave(roomName);
     });
 
 });
 
-server.listen(port, () => { console.log("Express in HTTP connected!") });
+server.listen(port, () => { console.log(`http://localhost:${port}`) });
